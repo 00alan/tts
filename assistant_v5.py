@@ -6,22 +6,35 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 import keyboard
+import dialogflow_v2 as dialogflow
 
 model_path = r"C:\Users\alane\Desktop\tts\vosk-model-small-en-us-0.15"
 #model_path = r"C:\Users\alane\Desktop\tts\vosk-model-en-us-0.42-gigaspeech"
 
+# Set up Google Cloud authentication (Replace with your service account JSON path)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\path\to\your\service-account.json"
+
+PROJECT_ID = "your-dialogflow-project-id"  # Replace with your Dialogflow project ID
+SESSION_ID = "12345"  # Can be dynamic if needed
+LANGUAGE_CODE = "en"
+
 def get_llm_response(text):
-    # Sending a prompt to the GPT model and getting a response
-    # Uncomment the below lines to use OpenAI API **do not delete this commented block without permission**
-    """
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt="Oncology Assistant: " + text,
-        max_tokens=150
-    )
-    return response.choices[0].text.strip()
-    """
-    return "Sorry, I am unable to help at this time."
+    """Send a user query to Dialogflow and get a response."""
+    try:
+        session_client = dialogflow.SessionsClient()
+        session = session_client.session_path(PROJECT_ID, SESSION_ID)
+
+        text_input = dialogflow.types.TextInput(text=text, language_code=LANGUAGE_CODE)
+        query_input = dialogflow.types.QueryInput(text=text_input)
+
+        response = session_client.detect_intent(session=session, query_input=query_input)
+
+        return response.query_result.fulfillment_text  # The response from Dialogflow
+
+    except Exception as e:
+        print(f"Error with Dialogflow API: {e}")
+        return "I'm sorry, I couldn't process your request."
+
 
 def play_response(text):
     filename = "response.mp3"
