@@ -8,8 +8,8 @@ from pydub.playback import play
 import keyboard
 from google.cloud import dialogflow
 
-model_path = r"C:\Users\alane\Desktop\tts\vosk-model-small-en-us-0.15"
-#model_path = r"C:\Users\alane\Desktop\tts\vosk-model-en-us-0.42-gigaspeech"
+model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"
+#model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-en-us-0.42-gigaspeech"
 
 # Set up Google Cloud authentication (Replace with your service account JSON path)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\path\to\your\service-account.json"

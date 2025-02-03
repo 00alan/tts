@@ -7,8 +7,8 @@ from pydub import AudioSegment
 from pydub.playback import play
 import keyboard
 
-model_path = r"C:\Users\alane\Desktop\tts\vosk-model-small-en-us-0.15"
-#model_path = r"C:\Users\alane\Desktop\tts\vosk-model-en-us-0.42-gigaspeech"
+model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"
+#model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-en-us-0.42-gigaspeech"
 
 def get_llm_response(text):
     # Sending a prompt to the GPT model and getting a response
