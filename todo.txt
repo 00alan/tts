@@ -1,0 +1,13 @@
+
+todo
+
+low hanging fruit
+- change audio processing to serverside
+- use dialogueflow cx instead of es
+
+hanging slightly higher
+- front end for user to interact via webpage instead of python codebase
+
+higher
+- app development
+
