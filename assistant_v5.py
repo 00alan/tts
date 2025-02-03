@@ -6,7 +6,7 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 import keyboard
-import dialogflow_v2 as dialogflow
+from google.cloud import dialogflow
 
 model_path = r"C:\Users\alane\Desktop\tts\vosk-model-small-en-us-0.15"
 #model_path = r"C:\Users\alane\Desktop\tts\vosk-model-en-us-0.42-gigaspeech"
