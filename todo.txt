@@ -6,7 +6,7 @@ low hanging fruit
 - use dialogueflow cx instead of es
 
 hanging slightly higher
-- front end for user to interact via webpage instead of python codebase
+- front end for user to interact via webpage/existing app (probably using dialogflow integrations) instead of python codebase
 
 higher
 - app development
