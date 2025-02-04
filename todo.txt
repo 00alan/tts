@@ -1,4 +1,12 @@
 
+openai todo:
+
+- adding functionality for user to create an appointment through interaction with voice agent
+- using o3-mini rather than gpt-4o-mini
+- using gpt-4o-audio-preview instead of vosk local models
+
+
+
 
 dialogflow todo (put on pause for now)
 
@@ -6,32 +14,5 @@ low hanging fruit
 - change audio processing to serverside
 - use dialogflow cx instead of es
 
-hanging slightly higher
-- front end for user to interact via webpage/existing app (probably using dialogflow integrations) instead of python codebase
-
 higher
-- app development
-
-
-
-
-openai script todo:
-
-prompt for adding google calendar api functionalities:
-i already have a working script which invokes openai api:
-1) user asks question
-2) question is sent to gpt which answers it, responseds, and conversation continues (back to step 1)
-
-but i would like to modify it in order to set up the following functionality: 
-1) user asks question
-2) question is sent to gpt, along with appended with instructions to first decide whether the question is pertaining to scheduling, and if so construct a google calendar api request in correct format if and return it, if not a scheduling question no need to do so - question is answered as usual and conversation continues (back to step 1)
-3) if it is a scheduling question, gpt returns the google calendar api request
-4) code makes the google calendar api request
-5) results of calendar api request are appended to original question, and sent to gpt which answers it using relevant calendary information and conversation continues (back to step 1)
-
-
-note that i do not want my script to be involved in any decicion making, all decision making is offloaded to gpt by appending instructions to the message delivered to gpt.
-
-can you modify my existing script (attached below) in order to achieve the desired affect
-
-** insert v6 script **
+- front end for user to interact via webpage/existing app (probably using dialogflow integrations) instead of python codebase
