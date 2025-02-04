@@ -20,3 +20,5 @@ Not pushed to github due to size - download models locally via https://alphaceph
 2) ~3hrs attempted and abandoned integration of dialogflow model for response generation (much harder to get off the ground than cheaply available llm api.... for use cases with necessity of precise and highly deterministic answers, will be preferable over gpt models)
 3) ~2hrs integrated gpt4o for response generation via openai api, and explored options for integrating select information into gpt4o responses, e.g. calendar availability, navigation instructions
 4) ~(in progress) integration of select privately accessed knowledge/info into gpt4o responses
+
+##### Older versions have been deleted but can be retrieved from commit history.
