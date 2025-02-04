@@ -6,35 +6,32 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 import keyboard
-from google.cloud import dialogflow
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Automatically find and load environment variables from .env file
+load_dotenv()
+
+# Initialize the OpenAI client with your API key
+client = OpenAI(
+    api_key=os.getenv('openai_api_key')
+)
 
 model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"
 #model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-en-us-0.42-gigaspeech"
 
-# Set up Google Cloud authentication (Replace with your service account JSON path)
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\path\to\your\service-account.json"
-
-PROJECT_ID = "your-dialogflow-project-id"  # Replace with your Dialogflow project ID
-SESSION_ID = "12345"  # Can be dynamic if needed
-LANGUAGE_CODE = "en"
-
 def get_llm_response(text):
-    """Send a user query to Dialogflow and get a response."""
+    """Send a user query to OpenAI and get a response."""
     try:
-        session_client = dialogflow.SessionsClient()
-        session = session_client.session_path(PROJECT_ID, SESSION_ID)
-
-        text_input = dialogflow.types.TextInput(text=text, language_code=LANGUAGE_CODE)
-        query_input = dialogflow.types.QueryInput(text=text_input)
-
-        response = session_client.detect_intent(session=session, query_input=query_input)
-
-        return response.query_result.fulfillment_text  # The response from Dialogflow
-
+        completion = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": text}],
+            max_tokens=150
+        )
+        return completion.choices[0].message.content
     except Exception as e:
-        print(f"Error with Dialogflow API: {e}")
+        print(f"Error with OpenAI API: {e}")
         return "I'm sorry, I couldn't process your request."
-
 
 def play_response(text):
     filename = "response.mp3"
@@ -81,8 +78,9 @@ def listen_and_respond():
             text = result.get('text', '')
             if text:
                 print("Processing your question:", text)
-                response_text = "Sorry, I am unable to help at this time."  # Replace with get_llm_response(text)
+                response_text = get_llm_response(text)
                 play_response(response_text)
+                print("\nAssistant reponse:", response_text, '\n')
         if keyboard.is_pressed('esc'):
             print("Exiting...")
             break
