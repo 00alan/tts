@@ -8,6 +8,8 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 import keyboard
+
+# local imports
 from helpers import llm_helper as lh
 
 model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"

@@ -16,8 +16,9 @@ credentials = service_account.Credentials.from_service_account_file(
 service = build('calendar', 'v3', credentials=credentials)
 
 # Define the time range for free/busy query
+days = 60
 time_min = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-time_max = (datetime.datetime.utcnow() + datetime.timedelta(days=1)).isoformat() + 'Z'
+time_max = (datetime.datetime.utcnow() + datetime.timedelta(days=days)).isoformat() + 'Z'
 
 # Construct the freeBusy query
 calendar_id =  '00alan.edmonds@gmail.com'
@@ -29,5 +30,24 @@ body = {
 
 # Call the freeBusy API
 response = service.freebusy().query(body=body).execute()
-
 print(response)
+busy_periods = response['calendars'][calendar_id]['busy']
+
+def compactify_periods(busy_periods):
+    # Function to group and compactify periods by date.
+    # Outputs a dictionary where each date has a list of tuples representing start and end times.
+    compact_periods = {}
+    for period in busy_periods:
+        date = period['start'][:10]  # Extract the date 'YYYY-MM-DD'
+        start_time = period['start'][11:16]  # Extract and format the start time 'HH:MM'
+        end_time = period['end'][11:16]  # Extract and format the end time 'HH:MM'
+        
+        # Append the start and end time tuple to the list of times for the corresponding date
+        if date not in compact_periods:
+            compact_periods[date] = []
+        compact_periods[date].append((start_time, end_time))
+    
+    return compact_periods
+
+print()
+print(compactify_periods(busy_periods))
