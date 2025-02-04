@@ -8,11 +8,9 @@ Not pushed to github. Contains sensitive material such as api keys.
 ##### vosk models
 Not pushed to github due to size - download models locally via https://alphacephei.com/vosk/models and update model_path var accordingly.
 
+#
 
-
-
-
-### Timeline
+## Timeline
 ##### *Summary of the development journey this repo has taken thus far*
 1) ~3hrs set up voice interaction interface, in this case a python script run locally
 	- a script that in theory should have been easy to create from gpt prompting was made very difficult due to python interactions with audio hardware devices (and diff os audio software? not sure)
