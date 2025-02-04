@@ -19,4 +19,4 @@ Not pushed to github due to size - download models locally via https://alphaceph
 3) ~2hrs integrated gpt4o for response generation via openai api, and explored options for integrating select information into gpt4o responses, e.g. calendar availability, navigation instructions
 4) ~(in progress) integration of select privately accessed knowledge/info into gpt4o responses
 
-##### Older versions have been deleted but can be retrieved from commit history.
+##### v6 is latest working version, v7 in development, other versions have been deleted but can be retrieved from commit history.
