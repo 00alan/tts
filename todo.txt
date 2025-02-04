@@ -17,6 +17,7 @@ higher
 
 openai script todo:
 
+prompt for adding google calendar api functionalities:
 i already have a working script which invokes openai api:
 1) user asks question
 2) question is sent to gpt which answers it, responseds, and conversation continues (back to step 1)

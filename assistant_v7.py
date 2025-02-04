@@ -23,13 +23,13 @@ model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"
 
 def get_llm_response(text):
     """Send a user query to OpenAI and get a response with scheduling decision."""
+    full_question = f"Decide if the following is a scheduling question. If it is not, respond accordingly. If it is, respond only with the relevant google calendar api query needed to answer the question (answer with the 'text' object required for calendar_response = requests.get('YOUR_CALENDAR_API_ENDPOINT', params={'query': text}). Question: {text}"
     try:
         # Send the user's question to GPT to decide if it's a scheduling question
         decision_completion = client.chat.completions.create(
             model="gpt-4o-mini",
-            messages=[{"role": "user", "content": text}],
+            messages=[{"role": "user", "content": full_question}],
             max_tokens=150,
-            user="Decide if the following is a scheduling question and respond accordingly."
         )
 
         decision_content = decision_completion.choices[0].message.content.strip()
@@ -42,7 +42,7 @@ def get_llm_response(text):
             if calendar_response.status_code == 200:
                 # Append calendar info to the original question
                 calendar_info = calendar_response.json()  # Assume JSON response
-                full_question = f"{text} With the following calendar info: {calendar_info}"
+                full_question = f"{text} - bear in mind the following calendar info: {calendar_info}"
 
                 # Send the modified question back to GPT
                 answer_completion = client.chat.completions.create(
