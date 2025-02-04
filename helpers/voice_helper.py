@@ -12,7 +12,8 @@ import keyboard
 # local imports
 from helpers import llm_helper as lh
 
-model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"
+model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15" 
+#model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-en-us-0.22-lgraph"
 #model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-en-us-0.42-gigaspeech"
 
 def play_response(text):
