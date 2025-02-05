@@ -1,17 +1,14 @@
 
-openai todo:
-
-- using o3-mini rather than gpt-4o-mini
-- using gpt-4o-audio-preview instead of vosk local models
-
+openai version todo:
+- using o1 or o3-mini rather than gpt-4o-mini
+- using gpt-4o-audio-preview instead of vosk local models 
+        -- in order to avoid issues of combining system instruction and conversation context with user audio,
+    will be best to record and send user autio gpt4-audio, receive it back as text, then compiling this 
+    user text with conversation context and system instructions text.
 
 
 
 dialogflow todo (put on pause for now)
-
-low hanging fruit
 - change audio processing to serverside
 - use dialogflow cx instead of es
-
-higher
 - front end for user to interact via webpage/existing app (probably using dialogflow integrations) instead of python codebase
