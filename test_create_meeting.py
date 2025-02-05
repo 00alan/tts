@@ -2,6 +2,8 @@ import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+from helpers import calendar_helper as ch
+
 # Path to your service account key file
 SERVICE_ACCOUNT_FILE = 'credentials.json'
 
@@ -17,7 +19,7 @@ service = build('calendar', 'v3', credentials=credentials)
 
 # Calculate the date and time for the new event
 tomorrow = datetime.datetime.utcnow() + datetime.timedelta(days=1)
-start_time = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 9, 0)  # 9 AM UTC
+start_time = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 3, 0)  # 3 AM UTC
 end_time = start_time + datetime.timedelta(hours=1)  # 1 hour long meeting
 print(start_time.isoformat())
 print(end_time.isoformat())
@@ -50,3 +52,6 @@ event_result = service.events().insert(calendarId=calendar_id, body=event).execu
 
 # Print the event details
 print(f"Event created: {event_result.get('htmlLink')}")
+
+# create a meeting on feb 6 at 6am
+ch.create_event('2025-02-06T06:00:00', 'Dr Joe')
