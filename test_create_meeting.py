@@ -19,6 +19,8 @@ service = build('calendar', 'v3', credentials=credentials)
 tomorrow = datetime.datetime.utcnow() + datetime.timedelta(days=1)
 start_time = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 9, 0)  # 9 AM UTC
 end_time = start_time + datetime.timedelta(hours=1)  # 1 hour long meeting
+print(start_time.isoformat())
+print(end_time.isoformat())
 
 # Create event details
 event = {

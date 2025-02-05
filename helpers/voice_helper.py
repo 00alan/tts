@@ -18,6 +18,8 @@ model_path = r"C:\Users\alane\Documents\GitHub\tts\vosk-model-small-en-us-0.15"
 
 def play_response(text):
     filename = "response.mp3"
+    # Remove asterisks from the text
+    text = text.replace('*', '')
     try:
         tts = gTTS(text=text, lang='en')
         tts.save(filename)

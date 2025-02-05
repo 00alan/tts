@@ -51,17 +51,19 @@ def get_freebusy(days=60):
     busy_periods = response['calendars'][calendar_id]['busy']
     return compactify_periods(busy_periods)
 
-def create_event(start_time, end_time):
+def create_event(start_time_iso, name):  # start_time_iso will be in ISO format
+    # Parse the ISO formatted time into a datetime object for time manipulation
+    start_time = datetime.datetime.fromisoformat(start_time_iso)
     event = {
-        'summary': 'New Meeting',
+        'summary': 'Appointment',
         'location': 'Virtual',
-        'description': 'Discussing important topics.',
+        'description': 'Appointment with ' + name,
         'start': {
-            'dateTime': start_time.isoformat(),
+            'dateTime': start_time_iso,
             'timeZone': 'UTC',
         },
         'end': {
-            'dateTime': end_time.isoformat(),
+            'dateTime': (start_time + datetime.timedelta(hours=1)).isoformat(), # 1 hour long meeting default
             'timeZone': 'UTC',
         },
         'reminders': {
@@ -76,3 +78,7 @@ def create_event(start_time, end_time):
     calendar_id =  '00alan.edmonds@gmail.com'
     event_result = service.events().insert(calendarId=calendar_id, body=event).execute()
     print('Event created: %s' % (event_result.get('htmlLink')))
+
+def get_today_date():
+    return datetime.datetime.now().strftime("%Y-%m-%d")
+    
