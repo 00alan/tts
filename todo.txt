@@ -1,12 +1,6 @@
 
 openai version todo:
-- using o1 or o3-mini rather than gpt-4o-mini
-- using gpt-4o-audio-preview instead of vosk local models 
-        -- in order to avoid issues of combining system instruction and conversation context with user audio,
-    will be best to record and send user autio gpt4-audio, receive it back as text, then compiling this 
-    user text with conversation context and system instructions text.
-
-
+- using o1 or o3-mini rather than gpt-4o (right now don't have high enough openai account tier)
 
 dialogflow todo (put on pause for now)
 - change audio processing to serverside
