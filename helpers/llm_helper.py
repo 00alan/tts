@@ -19,7 +19,8 @@ def get_llm_response(context):
         messages=[
             {"role": "system", "content": "Decide if the user has a scheduling or appointment related inquiry.\
             If it is not scheduling related, respond to the original inquiry naturally.\
-            If the user is providing details for an appointment (text must contain date and time) respond only with the text 'VERIFY'.\
+            If the user is providing details for an appointment (text must contain date and time) respond only\
+            with the text 'VERIFY'.\
             If is inquiring about an appointment, but without providing details, respond only with the text 'DETAILS'.\
             Otherwise, respond only with the text 'SCHEDULING'"}]
         messages.extend(context),
