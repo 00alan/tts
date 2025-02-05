@@ -3,9 +3,6 @@
 #### *.env file*
 Not pushed to github. Contains sensitive material such as api keys. 
 
-#### *vosk models*
-Not pushed to github due to size - download models locally via https://alphacephei.com/vosk/models and update model_path var accordingly.
-
 #### test / helper scripts
 Due to relative imports, when in terminal run test / helper scripts from their directory. For example, run python create_meeting.py from the test directory, instead of running python test/create_meeting.py from the base directory.
 
