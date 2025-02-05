@@ -8,7 +8,7 @@ Not pushed to github due to size - download models locally via https://alphaceph
 
 ### Overview
 
-##### This repo has been developed on windows os with Dell audio drivers. It may in the future run on other hardware.
+##### This python repo has been developed on windows os with Dell supported audio drivers.
 
 Run assistant.py to interact. It makes calls to openai api to access their stateless gpt models (such as gpt-4o-mini, which is currently used). Currently the stateless nature of llm usage accessed through api calls is not specific to openai but is also the case with Anthropic, Google Bard, Meta LLaMA and others.
 
