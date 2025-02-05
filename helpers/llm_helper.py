@@ -10,7 +10,7 @@ from helpers import calendar_helper as ch
 # Automatically find and load environment variables from .env file
 load_dotenv()
 client = OpenAI(
-    api_key=os.getenv('openai_api_key')
+    api_key=os.getenv('OPENAI_API_KEY')
 )
 
 def get_llm_response(context):

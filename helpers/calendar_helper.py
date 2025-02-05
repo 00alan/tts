@@ -3,16 +3,24 @@
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import datetime
+import os
+import json
+from dotenv import load_dotenv
 
-# Path to your service account key file
-SERVICE_ACCOUNT_FILE = 'credentials.json'
+load_dotenv()
 
-# Define the scopes
+# load from .env
+service_account_json_string = os.getenv('SERVICE_ACCOUNT_JSON')
+
+# Convert the JSON string back to a dictionary
+service_account_info = json.loads(service_account_json_string)
+
+# Define the scopes (ensure to use the scope that allows writing)
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 # Create credentials from the service account key file
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+credentials = service_account.Credentials.from_service_account_info(
+    service_account_info, scopes=SCOPES)
 
 # Build the service object for the Calendar API using the credentials
 service = build('calendar', 'v3', credentials=credentials)
