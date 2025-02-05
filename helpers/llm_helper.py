@@ -3,6 +3,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import base64
 
 # local imports
 from helpers import calendar_helper as ch
@@ -13,12 +14,20 @@ client = OpenAI(
     api_key=os.getenv('OPENAI_API_KEY')
 )
 
+def transcribe_audio(file_path):
+    audio_file = open(file_path, "rb")
+    return client.audio.transcriptions.create(
+        model="whisper-1", 
+        file=audio_file, 
+        response_format="text"
+    )
+
 def get_llm_response(context):
     """Send a user query to OpenAI and get a response."""
     try:
         messages=[
             {"role": "system", "content": "Decide what kind of response to generate.\
-            If the user is providing details for an appointment (text must contain date and time) respond only\
+            If the user is providing details for an appointment (must include any or all of date, time, or their name) respond only\
             with the text '#VERIFY#'.\
             If is inquiring about an appointment, but without providing details, respond only with the text '#DETAILS#'.\
             If it is some other kind of scheduling, appointment, or availability related inquiry, respond only with the text '#SCHEDULING#'\
@@ -56,7 +65,7 @@ def get_llm_response(context):
 
         if '#VERIFY#' in response:
             busy_periods = ch.get_freebusy()
-            messages=[{"role": "system", "content": "Please verify that the appointment (assumed to be 59minutes length if not specified, so end time needs to be checked also) does not conflict with doctor John's schedule, bearing in mind that doctor John is unavailable for the following periods: " + str(busy_periods) + f". Also bear in mind that today's date is {ch.get_today_date()}. If the appointment conflicts, describe the scheduling conflict to the user. If the appointment does not conflict, and the user has already provided their name, only respond with '#CONFIRMED#:' followed by the appointment details. If they have not yet provided their name, you must prompt them for it."}]
+            messages=[{"role": "system", "content": "Please verify that the appointment's date and time provided during the recent conversation (assumed to be 1hr length if not specified, so end time needs to be checked also) does not conflict with doctor John's schedule, bearing in mind that Doctor John is unavailable for the following periods: " + str(busy_periods) + f". Also bear in mind that today's date is {ch.get_today_date()}. If the appointment conflicts, describe the scheduling conflict to the user. If neither appointment start time nor end time conflicts with Dr John's schedule, and the user has already provided their name, date, and time during the conversation, only respond with '#CONFIRMED#:' followed by the appointment details. If they have not yet provided their name, date, or time, you must prompt them for it."}]
             messages.extend(context)
             completion = client.chat.completions.create(
                 model="gpt-4o",

@@ -11,7 +11,7 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-  model="gpt-4o-mini",
+  model="gpt-4o",
   store=True,
   messages=[
     {"role": "user", "content": "hello there"}
