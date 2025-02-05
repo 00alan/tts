@@ -8,3 +8,19 @@
 4) ~(in progress) integration of select privately accessed knowledge/info into gpt4o responses
 
 ##### v6 is latest working version, v7 in development, other versions have been deleted but can be retrieved from commit history.
+
+
+#### outputs
+
+Listening...
+Processing your question: can i schedule an appointment for february eighth ten a m
+
+Assistant reponse: Sure! To schedule that appointment, could you please provide your name?
+
+Listening...
+Processing your question: alan
+
+Assistant reponse: It seems like your message got cut off. How can I assist you with Alan?
+
+Listening...
+

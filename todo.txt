@@ -1,7 +1,6 @@
 
 openai todo:
 
-- adding functionality for user to create an appointment through interaction with voice agent
 - using o3-mini rather than gpt-4o-mini
 - using gpt-4o-audio-preview instead of vosk local models
 

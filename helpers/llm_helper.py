@@ -13,19 +13,19 @@ client = OpenAI(
     api_key=os.getenv('openai_api_key')
 )
 
-def get_llm_response(text):
+def get_llm_response(context):
     """Send a user query to OpenAI and get a response."""
     try:
+        messages=[
+            {"role": "system", "content": "Decide if the user has a scheduling or appointment related inquiry.\
+            If it is not scheduling related, respond to the original inquiry naturally.\
+            If the user is providing details for an appointment (text must contain date and time) respond only with the text 'VERIFY'.\
+            If is inquiring about an appointment, but without providing details, respond only with the text 'DETAILS'.\
+            Otherwise, respond only with the text 'SCHEDULING'"}]
+        messages.extend(context),
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "Decide if the user has a scheduling or appointment related inquiry.\
-                    If it is not scheduling related, respond to the original inquiry naturally.\
-                    If the user is providing details for an appointment (text must contain all three of date, time, and name) respond only with the text 'VERIFY'.\
-                    If it is a direct request to make an appointment, but without details provided, respond only with the text 'DETAILS'.\
-                    Otherwise, respond only with the text 'SCHEDULING'"},
-                {"role": "user", "content": text}
-            ],
+            messages=messages,
             max_tokens=150
         )
         response = completion.choices[0].message.content
@@ -34,37 +34,33 @@ def get_llm_response(text):
             # Get free/busy information
             busy_periods = ch.get_freebusy()
             # prompt gpt again with system content containing the busy periods
+            messages=[{"role": "system", "content": f"Please respond to the user's inquiry, bearing in mind your knowledge that doctor Joe is unavailable for the following periods: " + str(busy_periods) + f" - this information may, or may not, need to be mentioned in your helpful response to the user. Also bear in mind that today's date is {ch.get_today_date()}. Omit saying the year from any dates you mention."}]
+            messages.extend(context),
             completion = client.chat.completions.create(
                 #model="o3-mini", # more complex reasoning model for secondary prompt 
                 model="gpt-4o-mini",
-                messages=[
-                    #{"role": "system", "content": f"Please respond to the user's inquiry, bearing in mind your knowledge that doctor Joe is unavailable for the following periods: " + str(busy_periods) + f" - this information may, or may not, need to be mentioned in your helpful response to the user. Also bear in mind that today's date is {ch.get_today_date()}. If the user's inquiry would require knowledge of the doctor's schedule beyond the next {days} days, please let the user know that you do not have that information."},
-                    {"role": "system", "content": f"Please respond to the user's inquiry, bearing in mind your knowledge that doctor Joe is unavailable for the following periods: " + str(busy_periods) + f" - this information may, or may not, need to be mentioned in your helpful response to the user. Also bear in mind that today's date is {ch.get_today_date()}. Omit saying the year from any dates you mention."},
-                    {"role": "user", "content": text}
-                ],
+                messages=messages,
                 max_tokens=150
             )
             response = completion.choices[0].message.content
 
         if response == "DETAILS":
+            messages=[{"role": "system", "content": "Prompt the user for the date, time, and their own name."}]
+            messages.extend(context)
             completion = client.chat.completions.create(
                 model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Prompt the user for the date, time, and their own name."},
-                    {"role": "user", "content": text}
-                ],
+                messages=messages,
                 max_tokens=150
             )
             response = completion.choices[0].message.content
 
         if response == "VERIFY":
             busy_periods = ch.get_freebusy()
+            messages=[{"role": "system", "content": "Please verify that the appointment (assumed to be 1hr length if not specified) does not conflict with doctor Joe's schedule, bearing in mind that doctor Joe is unavailable for the following periods: " + str(busy_periods) + ". If the appointment conflicts, describe the scheduling conflict to the user. If the appointment does not conflict, and the user has already provided their name, only respond with 'CONFIRMED:' followed by the appointment details. If they have not provided their name, prompt them for it."}]
+            messages.extend(context)
             completion = client.chat.completions.create(
                 model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "Please verify that the appointment (assumed to be 1hr length if not specified) does not conflict with doctor Joe's schedule, bearing in mind that doctor Joe is unavailable for the following periods: " + str(busy_periods) + ". If the appointment conflicts, describe the scheduling conflict to the user. If the appointment does not conflict, only respond with 'CONFIRMED:' followed by the appointment details."},
-                    {"role": "user", "content": text}
-                ],
+                messages=messages,
                 max_tokens=150
             )
             response = completion.choices[0].message.content

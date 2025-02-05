@@ -8,6 +8,7 @@ from gtts import gTTS
 from pydub import AudioSegment
 from pydub.playback import play
 import keyboard
+from collections import deque
 
 # local imports
 from helpers import llm_helper as lh
@@ -50,6 +51,7 @@ def listen_and_respond():
 
     print("Press and hold the spacebar to speak; release to process. Press ESC to exit.")
     spacebar_pressed = False
+    conversation_history = deque(maxlen=10) # maintain context for llm
     while True:
         if keyboard.is_pressed('space'):
             if not spacebar_pressed:
@@ -63,9 +65,16 @@ def listen_and_respond():
             text = result.get('text', '')
             if text:
                 print("Processing your question:", text)
-                response_text = lh.get_llm_response(text)
+                # Append the user's text to the history
+                conversation_history.append({"role": "user", "content": text})
+
+                # Get response from the LLM
+                response_text = lh.get_llm_response(list(conversation_history))
                 play_response(response_text)
-                print("\nAssistant reponse:", response_text, '\n')
+
+                # Print and append the assistant's response to the history
+                print("\nAssistant response:", response_text, '\n')
+                conversation_history.append({"role": "assistant", "content": response_text})
         if keyboard.is_pressed('esc'):
             print("Exiting...")
             break
